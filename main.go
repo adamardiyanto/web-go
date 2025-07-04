@@ -2,12 +2,28 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
+	"path"
 )
 
 func index(w http.ResponseWriter, r *http.Request) {
-	var message = "welcome to index page"
-	w.Write([]byte(message))
+	var filepath = path.Join("views", "index.html")
+	var tmpl, err = template.ParseFiles(filepath)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	var data = map[string]interface{}{
+		"title": "WEB-GO",
+		"name":  "Mr. ARD",
+	}
+
+	err = tmpl.Execute(w, data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
