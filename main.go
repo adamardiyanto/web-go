@@ -19,6 +19,7 @@ func main() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/index", index)
 	http.HandleFunc("/hello", hello)
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("assets"))))
 
 	var address = "localhost:3000"
 	fmt.Printf("server started at %s\n", address)
